@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	<constant name="struts.devMode" value="true" />
+	<constant name="struts.configuration.xml.reload" value="true"/>
+	<constant name="struts.action.extension" value="do" />
+	
+    <package name="user" namespace="/" extends="struts-default">
+       <interceptors>
+          <!-- 配置自己的拦截器 -->
+          <interceptor name="login" class="com.xjtu.usermng.web.interceptor.LoginInterceptor"></interceptor>
+            <!-- 配置自己的拦截器栈 -->
+          <interceptor-stack name="myDefaultStack">
+               <!-- 加入自己的拦截器 -->
+             <interceptor-ref name="login">
+                    <!-- login方法不拦截，其他都拦截-->
+                   <param name="excludeMethods">loginIn</param>
+             </interceptor-ref>
+               <!-- 加入默认18个的拦截器 栈-->
+             <interceptor-ref name="defaultStack"></interceptor-ref>
+          </interceptor-stack>
+       </interceptors>
+        <!-- 指定当前包，默认拦截器栈为自己配置的拦截器栈 -->
+       <default-interceptor-ref name="myDefaultStack"></default-interceptor-ref>
+         <!-- 全局错误配置 -->
+        <global-exception-mappings>
+             <!-- 如果出现异常，转发到error对应的页面 -->
+             <exception-mapping result="error" exception="java.lang.RuntimeException"></exception-mapping>
+          
+        </global-exception-mappings>
+        <action name="UserAction_*" class="com.xjtu.usermng.web.action.UserAction" method="{1}">
+            <result name="error">/user/error1.jsp</result>
+            <result name="login">/login/login.jsp</result>
+            <result name="input">/login/login.jsp</result>
+            <result name="home" type="redirect">/login/home.jsp</result>
+             <result name="list">/user/list.jsp</result>
+              <result name="rlist" type="redirectAction">
+                 <param name="namespace">/</param>
+                 <param name="actionName">UserAction_list</param>
+              </result>
+              <result name="view">/user/view.jsp</result>
+              <result name="download" type="stream">
+                  <param name="contentType">application/msword</param>
+				  <param name="inputName">doc</param>
+				  <param name="contentDisposition">attachment;filename="${fileName}"</param>
+				  <param name="bufferSize">1024</param>
+                  
+              </result>
+        </action>
+    </package>
+   
+</struts>

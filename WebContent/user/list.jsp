@@ -148,7 +148,10 @@
 												<s:property value="education"/>
 											</td>
 											<td align="center" style="HEIGHT: 22px">
-												<a href="<c:url value='/user/edit.jsp?userID=15'/>">
+											    <s:url action="UserAction_edit" namespace="/" var="editUrl">
+												       <s:param name="uid" value="uid"></s:param>
+												      </s:url>
+												<a href="<s:property value="#editUrl"/>">
 													<img src="<c:url value='/images/i_edit.gif'/>" border="0" style="CURSOR: hand">
 												</a>
 											</td>
@@ -161,7 +164,10 @@
 												</a>
 											</td>
 											<td align="center" style="HEIGHT: 22px">
-												<a href="<c:url value='/user/list.jsp?userID=15'/>">
+											 <s:url action="UserAction_delete" namespace="/" var="deleteUrl">
+												       <s:param name="uid" value="uid"></s:param>
+												      </s:url>
+												<a href='<s:property value="#deleteUrl"/>'>
 													<img src="<c:url value='/images/i_del.gif'/>" width="16" height="16" border="0" style="CURSOR: hand">
 												</a>
 											</td>

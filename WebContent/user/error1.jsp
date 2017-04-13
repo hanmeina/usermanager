@@ -38,7 +38,7 @@ BODY {SCROLLBAR-FACE-COLOR: #cccccc; SCROLLBAR-HIGHLIGHT-COLOR: #ffffFF; SCROLLB
 			<td width="65%" height="84" align="center" valign="top" >
 				<span class="Style1"><font color="red"><s:property  value="exception.message"/></font>
 				  
-				    
+				    <s:debug></s:debug>
 				</span>
 			</td>
 		</tr>

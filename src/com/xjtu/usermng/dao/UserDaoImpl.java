@@ -118,4 +118,45 @@ public class UserDaoImpl implements UserDao{
 		}
 	}
 
+ /**
+  * 根据id删除用户
+  */
+@Override
+public void delete(String uid) {
+	// TODO Auto-generated method stub
+	String sql= "delete from tbl_user where uid=?";
+	try {
+		int result = 	qr.update(sql, uid);
+		if(result!=1){
+			
+			throw new RuntimeException("删除用户失败!");
+		}
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+		throw new RuntimeException("删除用户失败!");
+	}
+	
+	
+}
+
+		@Override
+		public void update(User u) {
+			String sql =	
+					"update tbl_user set username=?,loginname=?, loginpass=?,filepath=?,filename=? where uid= ?";
+
+				try {
+					int result = qr.update(sql,u.getUsername(),u.getLoginname(),u.getLoginpass(),u.getFilepath(),u.getFilename(),u.getUid());
+					System.out.println(result);
+					System.out.println(sql);
+					if(result!=1){
+						throw new RuntimeException("修改用户失败!");
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+					throw new RuntimeException("修改用户失败!");
+				}
+				 
+		}
+
 }

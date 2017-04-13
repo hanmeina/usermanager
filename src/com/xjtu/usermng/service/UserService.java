@@ -24,4 +24,13 @@ public class UserService {
 	  return userDao.getUserById(id);
 	  
   }
+   public void delete(String uid) {
+
+    userDao.delete(uid);
+	
+   }
+public void editUser(User user) {
+	// TODO Auto-generated method stub
+	userDao.update(user);
+}
 }

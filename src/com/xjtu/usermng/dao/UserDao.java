@@ -10,4 +10,6 @@ public interface UserDao {
  public List<User> getUserListByConditon(User user); 
  public void saveUser(User u);
  public User getUserById(String id);
+ public void delete(String uid);
+public void update(User user);
 }

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -54,8 +55,10 @@ public class UserAction  extends ActionSupport implements  ModelDriven<User>{
 	}
 	private String filePath ;
 	private String fileName;
+	
 	public String getFileName(){
 		try {
+			System.out.println("fileName"+fileName);
 			return URLEncoder.encode(fileName, "utf-8");
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
@@ -63,18 +66,93 @@ public class UserAction  extends ActionSupport implements  ModelDriven<User>{
 			throw new RuntimeException("不可能");
 		}
 	}
-	public InputStream getDoc(){
+	
+	
+	public String getFilePath() {
+		return filePath;
+	}
+
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
+	}
+
+	public InputStream getDownloadDoc(){
 		return ServletActionContext.getServletContext().getResourceAsStream(filePath);
 	}
+	
 	public String download(){
 		//根据id查找用户
 		User user = userService.view(u.getUid());
 		//拿到用户的文件路径，文件名称
 		filePath = user.getFilepath();
 		fileName = user.getFilename();
-		
+		System.out.println("filePath:"+filePath);
+		System.out.println("fileName:"+fileName);
 		return "download";
 		
+	}
+	private List<String> hobbyList;
+	
+	public List<String> getHobbyList() {
+		return hobbyList;
+	}
+
+	public void setHobbyList(List<String> hobbyList) {
+		this.hobbyList = hobbyList;
+	}
+
+	/**
+	 * 删除用户
+	 * @return
+	 */
+	public String  edit(){
+		User user = userService.view(u.getUid());
+		String hobby = user.getHobby();
+		 hobbyList= new ArrayList<String>();  
+		   String [] referealReasons =hobby.split(", ");  
+		   for(String b :referealReasons){  
+		    hobbyList.add(b);  
+		   } 
+		//System.out.println(hobby);
+    	//标签回显是放入值栈，放入值栈栈顶
+    	ValueStack vs = ActionContext.getContext().getValueStack();
+    	vs.getRoot().push(user);
+    	//vs.push();
+    	return "edit";  
+	}
+	
+	public String editUser(){
+		 String uuid = UUID.randomUUID().toString();
+			if(upload2!=null){
+			//1.将上传的文件转存  
+			    //>>找upload文件夹绝对路径
+			     String dirPath = 	ServletActionContext.getServletContext().getRealPath("/upload");
+			     //>>生成文件名称（uuid）
+			   
+			    //>>转存
+			    File targetFile = new File(dirPath+"/"+uuid);
+			    upload2.renameTo(targetFile);
+			   //2.将文件的路径以及文件的原始名称封装到User对象
+			    u.setFilepath("/upload/"+uuid);
+			    u.setFilename(upload2FileName);   
+			}    
+			//根据id查找用户
+			User user = userService.view(u.getUid());
+			//拿到用户的文件路径，文件名称
+			filePath = user.getFilepath();
+			fileName = user.getFilename();
+		userService.editUser(u);
+		return "rlist";
+	}
+	/**
+	 * 删除用户
+	 * @return
+	 */
+	public String  delete(){
+		
+		userService.delete(u.getUid());	
+		
+		return "rlist";
 	}
 	/**
 	 * 查看用户详情

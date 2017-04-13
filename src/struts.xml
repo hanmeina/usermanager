@@ -42,9 +42,10 @@
                  <param name="actionName">UserAction_list</param>
               </result>
               <result name="view">/user/view.jsp</result>
+              <result name="edit">/user/edit.jsp</result>
               <result name="download" type="stream">
                   <param name="contentType">application/msword</param>
-				  <param name="inputName">doc</param>
+				  <param name="inputName">downloadDoc</param>
 				  <param name="contentDisposition">attachment;filename="${fileName}"</param>
 				  <param name="bufferSize">1024</param>
                   
